@@ -89,15 +89,28 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
                    $news = $data->selectnewsprofiledata();
                    if($news):
                    	while($row = $news->fetch_assoc()):
+                   		$nwsid= $row['newsID'];
 				?>
 					<div class="mt-3">
 						<h1><?php echo $row['newsheadline']; ?></h1>
 						<small class="text-secondary"><?php echo $fmt->formatDate($row['date']); ?></small>
-					   <p class="text-justify"><?php echo $row['news']; ?></p>
+					   <p class="text-justify fw-lighter"><?php echo $row['news']; ?></p>
 					</div>
 					<p class="border border-dark border-top-0 border-start-0 border-end-0 my-3">
-				<?php endwhile; ?>
-				<?php endif; ?>
+				<?php 
+                    $cms = $uobj->commentshow();
+                    if($cms):
+                    	while ($comrow= $cms->fetch_assoc()): 
+                    		if($nwsid == $comrow['newsid'] ):
+				?>
+				<div class="bg-secondary text-light mx-3 mt-1 p-2">
+                   <p><small class="fw-bold"><?php echo $comrow['profinename']; ?></small> ::: <small class="fst-italic"><?php echo $comrow['commenttime']; ?></small></p>
+                   <span  class="fw-lighter"><?php echo $comrow['comments']; ?></span>
+				</div>
+
+			<?php endif; endwhile; endif; ?>
+			<?php endwhile; ?>
+			<?php endif; ?>
 		   </div>
 			<!-- form section end -->
 		</div>

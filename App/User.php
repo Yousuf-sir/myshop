@@ -105,9 +105,60 @@ class User
 		    }
 	}
 	// =======
- public function userComments(){
- 	//====
+ public function userComments($news){
+
+ 	$newsid  =	$this->fm->validation($news['newsidc']);
+ 	$news    =	$this->fm->validation($news['comments']);
+ 	
+    
+ 	$news    =   mysqli_real_escape_string($this->dbc->link,$news);
+ 	$newsid  =   mysqli_real_escape_string($this->dbc->link,$newsid);
+
+ 	$userid  =   session::get('useid');
+ 	$comdate = date("F j, Y, g:i a");
+
+     if(empty($userid) || empty($newsid) || empty($news)){
+        $this->errorMgs['comErrE']= "You didn't write .... ";
+     }else{
+     	$newsin = "INSERT INTO comments SET
+       		comments    ='$news',
+       		userid      ='$userid',
+            newsid      = '$newsid',
+            commenttime = '$comdate'
+       		";
+       		$coms = $this->dbc->insert($newsin);
+
+       		if($coms){
+       		$this->errorMgs['successcom']= "Thanks for your opinon ! ";	
+       		}else{
+       			$this->errorMgs['notsuccesscom']= "You are not able to comments ! ";
+       		}
+     } 	
+
+ 	
  }
+
+ /**
+ * comment show
+ */
+	 public function commentshow()
+	 {
+	 	$comm = "SELECT
+  				comments.comments,
+  				comments.commenttime,
+  				comments.newsid,
+  				profile.profinename
+				FROM comments
+				JOIN profile
+  				ON profile.profileID = comments.userid
+				JOIN  news
+  				ON  news.newsID  = comments.newsid
+  				";
+
+  				
+  				$result = $this->dbc->select($comm);
+		        return $result;
+	        } 
 
 // ======
 }

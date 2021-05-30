@@ -17,6 +17,6 @@
 			</div>
 		</div>
 	</footer>
-<script src="vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="vendor/twbs/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
