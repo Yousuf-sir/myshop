@@ -105,7 +105,9 @@ class User
 		    }
 	}
 	// =======
-
+ public function userComments(){
+ 	//====
+ }
 
 // ======
 }
